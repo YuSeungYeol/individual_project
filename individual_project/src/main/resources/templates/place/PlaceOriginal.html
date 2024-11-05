@@ -3,9 +3,70 @@
       layout:decorate="~{include/layout}">
 <th:block layout:fragment="content">
 	<div>
-		<div>
-			<h3>근처 위치</h3>
-		</div>
-	</div> 
+            <!-- 검색 영역 -->
+            <div>
+                <h3>검색</h3>
+                <form action="@{/place}" th:object="${searchDto}" method="get" onsubmit="searchNearby(); return false;">
+                    <input type="text" name="query" placeholder="장소를 입력하세요">
+                    <input type="submit" value="검색">
+                </form>
+            </div>
+
+            <!-- 근처 위치 표시 영역 -->
+            <div id="results-container" style="margin-top: 20px;">
+                <h3>근처 위치</h3>
+                <div id="locations-list">
+                    <!-- 위치 및 주소 정보가 여기에 동적으로 추가됩니다 -->
+                </div>
+            </div>
+        </div>
+
+        <!-- 지도 및 위치 데이터 처리 스크립트 -->
+        <script>
+            function searchNearby() {
+                // 사용자의 현재 위치 가져오기
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(function (position) {
+                        const lat = position.coords.latitude;
+                        const lon = position.coords.longitude;
+
+                        // 검색 결과 가져오기
+                        fetch(`/api/smoking-areas?lat=${lat}&lon=${lon}`)
+                            .then(response => response.json())
+                            .then(data => {
+                                displayLocations(data);
+                                scrollToResults();
+                            })
+                            .catch(error => console.error('Error fetching nearby smoking areas:', error));
+                    });
+                } else {
+                    alert("위치 정보를 사용할 수 없습니다.");
+                }
+            }
+
+            function displayLocations(locations) {
+                const locationsList = document.getElementById('locations-list');
+                locationsList.innerHTML = ''; // 기존 결과 초기화
+
+                if (locations.length === 0) {
+                    locationsList.innerHTML = '<p>근처에 흡연 장소가 없습니다.</p>';
+                } else {
+                    locations.forEach((location, index) => {
+                        const locationElement = document.createElement('div');
+                        locationElement.classList.add('location-item');
+                        locationElement.innerHTML = `
+                            <p><strong>${index + 1}. 위치:</strong> ${location.address}</p>
+                            <p><strong>위도:</strong> ${location.lat}, <strong>경도:</strong> ${location.lon}</p>
+                        `;
+                        locationsList.appendChild(locationElement);
+                    });
+                }
+            }
+
+            function scrollToResults() {
+                const resultsContainer = document.getElementById('results-container');
+                resultsContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        </script>
 </th:block>
 </html>
