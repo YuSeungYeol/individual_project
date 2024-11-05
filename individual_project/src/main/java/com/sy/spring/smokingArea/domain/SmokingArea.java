@@ -1,8 +1,8 @@
 package com.sy.spring.smokingArea.domain;
 
+import java.time.LocalDateTime;
 
 import jakarta.persistence.*;
-
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "smokingArea")
+@Table(name = "smoking_area")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @Setter
@@ -19,13 +19,24 @@ import lombok.Setter;
 @Builder
 public class SmokingArea {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="smokingArea_no")
-	private Long smokingAreaNo;
-	
-	
-	 private String address; // 주소
-	 private double lat;     // 위도
-	 private double lon;     // 경도
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "area_no")
+    private Long areaNo;
+
+    @Column(name = "address", nullable = false)
+    private String address;
+
+    @Column(name = "latitude", nullable = false)
+    private double latitude;
+
+    @Column(name = "longitude", nullable = false)
+    private double longitude;
+
+    @Column(name = "created_date", nullable = false)
+    private LocalDateTime createdDate;
+
+    @Column(name = "updated_date")
+    private LocalDateTime updatedDate;
+
 }
