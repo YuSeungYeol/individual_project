@@ -15,7 +15,6 @@ import lombok.Setter;
 @Table(name = "smokingArea")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
-@Setter
 @Getter
 @Builder
 public class SmokingArea {
@@ -42,4 +41,6 @@ public class SmokingArea {
 
     @Column(name = "search_query")
     private String searchQuery;
+
+    // 생성자 및 getter만 사용
 }
