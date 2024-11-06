@@ -3,70 +3,65 @@
       layout:decorate="~{include/layout}">
 <th:block layout:fragment="content">
 	<div>
-            <!-- 검색 영역 -->
             <div>
                 <h3>검색</h3>
-                <form action="@{/place}" th:object="${searchDto}" method="get" onsubmit="searchNearby(); return false;">
+                <form action="@{/place/search}" th:object="${searchDto}" method="get">
                     <input type="text" name="query" placeholder="장소를 입력하세요">
                     <input type="submit" value="검색">
                 </form>
             </div>
 
-            <!-- 근처 위치 표시 영역 -->
-            <div id="results-container" style="margin-top: 20px;">
-                <h3>근처 위치</h3>
-                <div id="locations-list">
-                    <!-- 위치 및 주소 정보가 여기에 동적으로 추가됩니다 -->
-                </div>
-            </div>
-        </div>
+            <!-- 지도 표시 영역 -->
+            <div id="map" style="width: 100%; height: 400px;"></div>
 
-        <!-- 지도 및 위치 데이터 처리 스크립트 -->
-        <script>
-            function searchNearby() {
-                // 사용자의 현재 위치 가져오기
+            <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+            <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+            <script>
+                // 기본 지도 설정: 서울 중심
+                const map = L.map('map').setView([37.5665, 126.9780], 12); // 초기 위치: 서울
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    maxZoom: 19,
+                }).addTo(map);
+
+                // 마커 설정 (드래그 가능)
+                const marker = L.marker([37.5665, 126.9780], { draggable: true }).addTo(map);
+
+                // 흡연장 목록을 가져와서 마커 추가
+                const smokingAreas = /*[[${smokingAreas}]]*/ [];
+                smokingAreas.forEach(area => {
+                    L.marker([area.latitude, area.longitude]).addTo(map);
+                });
+
+                // Nominatim 지오코더 추가
+                const geocoder = L.Control.Geocoder.nominatim();
+
+                // HTML5 Geolocation으로 사용자 위치 받기
                 if (navigator.geolocation) {
                     navigator.geolocation.getCurrentPosition(function (position) {
-                        const lat = position.coords.latitude;
-                        const lon = position.coords.longitude;
+                        const lat = position.coords.latitude,
+                              lon = position.coords.longitude;
+                        const userLocation = [lat, lon];
+                        map.setView(userLocation, 14); // 사용자 위치로 지도 중심 이동
+                        marker.setLatLng(userLocation);
 
-                        // 검색 결과 가져오기
-                        fetch(`/api/smoking-areas?lat=${lat}&lon=${lon}`)
-                            .then(response => response.json())
-                            .then(data => {
-                                displayLocations(data);
-                                scrollToResults();
-                            })
-                            .catch(error => console.error('Error fetching nearby smoking areas:', error));
-                    });
-                } else {
-                    alert("위치 정보를 사용할 수 없습니다.");
-                }
-            }
-
-            function displayLocations(locations) {
-                const locationsList = document.getElementById('locations-list');
-                locationsList.innerHTML = ''; // 기존 결과 초기화
-
-                if (locations.length === 0) {
-                    locationsList.innerHTML = '<p>근처에 흡연 장소가 없습니다.</p>';
-                } else {
-                    locations.forEach((location, index) => {
-                        const locationElement = document.createElement('div');
-                        locationElement.classList.add('location-item');
-                        locationElement.innerHTML = `
-                            <p><strong>${index + 1}. 위치:</strong> ${location.address}</p>
-                            <p><strong>위도:</strong> ${location.lat}, <strong>경도:</strong> ${location.lon}</p>
-                        `;
-                        locationsList.appendChild(locationElement);
+                        // 흡연장 검색 및 마커 추가 함수 호출
+                        searchSmokingAreas(lat, lon);
                     });
                 }
-            }
 
-            function scrollToResults() {
-                const resultsContainer = document.getElementById('results-container');
-                resultsContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }
-        </script>
+                // 흡연장 검색 및 마커 추가 함수
+                function searchSmokingAreas(latitude, longitude) {
+                    fetch(`/api/smoking-areas?lat=${latitude}&lon=${longitude}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            data.forEach(area => {
+                                L.marker([area.lat, area.lon]).addTo(map);
+                            });
+                        })
+                        .catch(error => console.error('Error fetching smoking area data:', error));
+                }
+            </script>
+        </div>
 </th:block>
 </html>

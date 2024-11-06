@@ -1,7 +1,8 @@
 package com.sy.spring.smokingArea.domain;
 
 import java.time.LocalDateTime;
-
+import java.util.List;
+ 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -9,9 +10,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
+ 
 @Entity
-@Table(name = "smoking_area")
+@Table(name = "smokingArea")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @Setter
@@ -39,4 +40,6 @@ public class SmokingArea {
     @Column(name = "updated_date")
     private LocalDateTime updatedDate;
 
+    @Column(name = "search_query")
+    private String searchQuery;
 }
