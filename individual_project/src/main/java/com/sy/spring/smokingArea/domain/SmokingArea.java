@@ -18,7 +18,7 @@ import lombok.Setter;
 @Getter
 @Builder
 public class SmokingArea {
-
+ 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "area_no")
