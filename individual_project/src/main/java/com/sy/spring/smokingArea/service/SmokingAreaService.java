@@ -22,7 +22,7 @@ public class SmokingAreaService {
         // 실제 위치 기반으로 가까운 흡연장 데이터 가져오기
         return smokingAreaRepository.findNearbySmokingAreas(latitude, longitude);
     }
-
+ 
     // 검색된 주소를 기준으로 흡연장 검색
     public List<SmokingArea> searchSmokingAreas(String searchQuery) {
         // 장소명으로 흡연장 검색
