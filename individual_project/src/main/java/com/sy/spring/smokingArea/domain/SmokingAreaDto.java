@@ -16,7 +16,7 @@ import lombok.ToString;
 @ToString
 @Builder
 public class SmokingAreaDto {
-    
+   
     private Long areaNo;
     private String address;
     private double latitude;
