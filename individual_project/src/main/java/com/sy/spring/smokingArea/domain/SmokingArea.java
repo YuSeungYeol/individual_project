@@ -13,6 +13,7 @@ import lombok.Setter;
  
 @Entity
 @Table(name = "smokingArea")
+@Access(AccessType.FIELD)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
