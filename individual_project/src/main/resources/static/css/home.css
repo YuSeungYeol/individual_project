@@ -28,7 +28,7 @@ form {
     display: flex;
     flex-direction: column;
     gap: 10px;
-}
+} 
 
 input[type="text"] {
     padding: 10px;
