@@ -21,7 +21,7 @@ public class SmokingAreaController {
     public SmokingAreaController(SmokingAreaService smokingAreaService) {
         this.smokingAreaService = smokingAreaService;
     } 
- 
+
     // 검색 페이지 로드
     @GetMapping("/place")
     public String getSmokingAreaPage(@ModelAttribute("searchDto") SmokingAreaDto smokingAreaDto, Model model) {
