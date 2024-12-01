@@ -20,7 +20,7 @@ public class SmokingAreaController {
     @Autowired
     public SmokingAreaController(SmokingAreaService smokingAreaService) {
         this.smokingAreaService = smokingAreaService;
-    } 
+    }
  
     // 검색 페이지 로드
     @GetMapping("/place")
