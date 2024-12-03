@@ -16,7 +16,7 @@ public class SmokingAreaService {
     public SmokingAreaService(SmokingAreaRepository smokingAreaRepository) {
         this.smokingAreaRepository = smokingAreaRepository;
     }
-
+ 
     // 기본 위치 (서울) 기준으로 근처 흡연장 가져오기
     public List<SmokingArea> getSmokingAreas(double latitude, double longitude) {
         double radius = 1000; // 예를 들어 1000m 내에서 검색
