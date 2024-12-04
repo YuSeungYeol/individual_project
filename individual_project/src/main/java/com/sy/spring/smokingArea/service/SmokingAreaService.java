@@ -21,7 +21,7 @@ public class SmokingAreaService {
     public List<SmokingArea> getSmokingAreas(double latitude, double longitude) {
         double radius = 1000; // 예를 들어 1000m 내에서 검색
         return smokingAreaRepository.findNearbySmokingAreas(latitude, longitude, radius);
-    }
+    } 
 
     // 검색된 주소를 기준으로 흡연장 검색
     public List<SmokingArea> searchSmokingAreas(String searchQuery) {
