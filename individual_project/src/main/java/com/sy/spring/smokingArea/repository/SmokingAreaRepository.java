@@ -15,4 +15,4 @@ public interface SmokingAreaRepository extends JpaRepository<SmokingArea, Long> 
     @Query("SELECT s FROM SmokingArea s WHERE " +
            "POW((s.latitude - :latitude), 2) + POW((s.longitude - :longitude), 2) < POW(:radius, 2)")
     List<SmokingArea> findNearbySmokingAreas(double latitude, double longitude, double radius);
-}
+} 
