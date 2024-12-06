@@ -15,7 +15,7 @@ public class SmokingAreaService {
     @Autowired
     public SmokingAreaService(SmokingAreaRepository smokingAreaRepository) {
         this.smokingAreaRepository = smokingAreaRepository;
-    }
+    } 
  
     // 기본 위치 (서울) 기준으로 근처 흡연장 가져오기
     public List<SmokingArea> getSmokingAreas(double latitude, double longitude) {
