@@ -30,7 +30,7 @@ public class SmokingAreaController {
         model.addAttribute("smokingAreas", smokingAreas);
         return "placeOriginal"; // thymeleaf 템플릿 이름
     }
- 
+
     // 검색 후 근처 흡연장 검색
     @GetMapping("/place/search")
     public String searchSmokingArea(@RequestParam("query") String searchQuery, Model model) {
