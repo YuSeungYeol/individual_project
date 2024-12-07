@@ -60,7 +60,7 @@ dependencyManagement {
         mavenBom "org.springframework.boot:spring-boot-dependencies:3.3.2"
     }
     dependencies {
-        dependency 'org.hibernate:hibernate-core:6.5.3.Final'
+        dependency 'org.hibernate:hibernate-core:5.6.15.Final'
     }
 }
 
