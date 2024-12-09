@@ -3,8 +3,8 @@
 <th:block layout:fragment="content">
 <link rel="stylesheet" th:href="@{/css/home.css}"/>
     <div>
+    	<h3>흡연부스 검색</h3>
         <div>
-            <h3>흡연부스 검색</h3>
             <form th:action="@{/place}" method="get">
                 <input type="text" name="query" placeholder="장소를 입력하세요">
                 <input type="submit" value="검색">
@@ -12,7 +12,7 @@
         </div> 
 
         <!-- 지도 표시 영역 -->
-        <div id="map" style="width:30%; height:100px;"></div>
+        <div id="map" style="width:60%; height:300px;"></div>
 
         <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
         <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
