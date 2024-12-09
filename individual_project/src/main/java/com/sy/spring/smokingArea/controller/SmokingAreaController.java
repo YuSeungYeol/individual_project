@@ -28,7 +28,7 @@ public class SmokingAreaController {
         // 기본 위치 (서울) 기준으로 흡연장 목록을 가져오기
         List<SmokingArea> smokingAreas = smokingAreaService.getSmokingAreas(37.5665, 126.9780);
         model.addAttribute("smokingAreas", smokingAreas);
-        return "placeOriginal"; // thymeleaf 템플릿 이름
+        return "place/placeOriginal"; // 템플릿 경로 확인
     }
 
     // 검색 후 근처 흡연장 검색
@@ -37,6 +37,7 @@ public class SmokingAreaController {
         // 검색된 장소명을 기준으로 흡연장 검색
         List<SmokingArea> smokingAreas = smokingAreaService.searchSmokingAreas(searchQuery);
         model.addAttribute("smokingAreas", smokingAreas);
-        return "placeOriginal"; // 템플릿 리턴
+        return "place/placeOriginal"; // 템플릿 경로 확인
     }
+
 }
