@@ -6,75 +6,130 @@ body {
     background-color: #f4f4f9;
 }
 
-/* 검색 영역 */
-div > div {
-    margin: 20px;
+/* 전체 컨테이너 스타일 */
+#container {
+    display: flex;
+    flex-direction: row;
+    width: 80%;
+    height: 100vh;
+    padding: 20px;
+    gap: 20px;
+    box-sizing: border-box;
+    margin-left: 200px;
+    margin-right: 100px;
+}
+
+/* 폼 컨테이너 스타일 */
+#form-container {
+    width: 50%;
+    background-color: #fff;
     padding: 20px;
     border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-/* 검색 제목 스타일 */
-h3 {
-    font-size: 24px;
-    font-weight: bold;
-    margin-bottom: 20px;
-    margin-left: 700px;
-    color: #333;
-}
-
-/* 검색 폼 스타일 */
-form {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     display: flex;
     flex-direction: column;
-    gap: 10px;
-} 
+    align-items: center;
+}
 
-input[type="text"] {
+/* 폼 항목 스타일 */
+form {
+    width: 80%; /* 폼 전체 너비 */
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* 각 항목 간격 */
+}
+
+form div {
+    display: flex;
+    flex-direction: column;
+    width: 100%; /* 각 항목의 너비를 100%로 설정하여 중앙에 위치 */
+}
+
+/* 레이블 */
+form label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #555;
+}
+
+/* 인풋 필드 및 셀렉트 박스 */
+form input[type="text"],
+form select {
     padding: 10px;
-    font-size: 16px;
-    border: 1px solid #ccc;
+    border: 1px solid #ddd;
     border-radius: 4px;
-    width: 100%;
+    font-size: 16px;
+    width: 95%;
     box-sizing: border-box;
 }
 
-input[type="submit"] {
-    padding: 10px;
-    font-size: 16px;
-    background-color: #4CAF50;
-    color: white;
+/* 읽기 전용 필드 스타일 */
+form input[readonly] {
+    background-color: #f5f5f5;
+    cursor: not-allowed;
+}
+
+/* 주소 찾기 버튼 */
+form button {
+    padding: 10px 20px;
     border: none;
     border-radius: 4px;
+    font-size: 16px;
     cursor: pointer;
-    width: 100%;
+    background-color: #EFEFEF;
+    color: black;
+    margin-left: 20px;
+    margin-top: 5px;
+    align-self: flex-end;
 }
 
-input[type="submit"]:hover {
-    background-color: #45a049;
+form button:hover {
+    background-color: #ddd;
 }
 
-/* 지도 스타일 */
+/* 등록 버튼 스타일 */
+form input[type="submit"] {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: #28a745;
+    color: #fff;
+}
+
+form input[type="submit"]:hover {
+    background-color: #218838;
+}
+
+/* 지도 컨테이너 스타일 */
+#map-container {
+    width: 40%;
+    height: calc(100vh - 40px); /* 전체 높이에서 패딩을 뺌 */
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
 #map {
     width: 100%;
-    height: 400px;
-    border-radius: 8px;
-    margin-top: 20px;
+    height: 100%;
 }
 
-/* 반응형 디자인 */
+/* 반응형 처리 */
 @media (max-width: 768px) {
-    #map {
-        height: 300px;
+    #container {
+        flex-direction: column;
     }
-    div > div {
-        margin: 10px;
-        padding: 15px;
+
+    #form-container,
+    #map-container {
+        width: 80%;
+        height: 50vh;
     }
-    h3 {
-        font-size: 20px;
-    }
-    input[type="submit"] {
-        font-size: 14px;
+
+    form {
+        width: 100%;
     }
 }
