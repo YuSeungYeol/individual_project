@@ -50,18 +50,31 @@
                 });
             }
 
-            // 흡연장 검색 및 마커 추가 함수
             function searchSmokingAreas(latitude, longitude) {
                 fetch(`/api/smoking-areas?lat=${latitude}&lon=${longitude}`)
                     .then(response => response.json())
                     .then(data => {
+                        console.log(data);  // 반환된 데이터 확인
                         data.forEach(area => {
                             const areaLocation = [area.lat, area.lon];
-                            L.marker(areaLocation).addTo(map);
+ 
+                            // 빨간 마커 아이콘 설정
+                            const redIcon = L.icon({
+                                iconUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Red_dot.svg/768px-Red_dot.svg.png', // 빨간 마커 아이콘
+                                iconSize: [25, 25],
+                                iconAnchor: [12, 25],
+                                popupAnchor: [0, -25]
+                            });
+
+                            // 빨간 마커를 지도에 추가
+                            L.marker(areaLocation, { icon: redIcon })
+                                .addTo(map)
+                                .bindPopup(area.address); // 팝업 추가 (흡연장 주소 표시)
                         });
                     })
                     .catch(error => console.error('Error fetching smoking area data:', error));
             }
+
         </script>
     </th:block>
 </html>
