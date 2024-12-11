@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 
@@ -38,6 +39,12 @@ public class SmokingAreaController {
         List<SmokingArea> smokingAreas = smokingAreaService.searchSmokingAreas(searchQuery);
         model.addAttribute("smokingAreas", smokingAreas);
         return "place/placeOriginal"; // 템플릿 경로 확인
+    }
+
+    @GetMapping("/api/smoking-areas")
+    @ResponseBody
+    public List<SmokingArea> getSmokingAreas(@RequestParam double lat, @RequestParam double lon) {
+        return smokingAreaService.getSmokingAreas(lat, lon);
     }
 
 }
