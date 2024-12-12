@@ -43,10 +43,12 @@ public class SmokingAreaController {
 
     @GetMapping("/api/smoking-areas")
     @ResponseBody
-    public List<SmokingArea> getSmokingAreas(@RequestParam double lat, @RequestParam double lon) {
+    public List<SmokingArea> getSmokingAreas(@RequestParam(name = "lat") double lat,
+                                             @RequestParam(name = "lon") double lon) {
         System.out.println("Received lat: " + lat + ", lon: " + lon);
         return smokingAreaService.getSmokingAreas(lat, lon);
     }
+
 
 
 
