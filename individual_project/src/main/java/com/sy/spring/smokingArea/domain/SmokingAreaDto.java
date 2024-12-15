@@ -37,7 +37,7 @@ public class SmokingAreaDto {
                 .searchQuery(smokingArea.getSearchQuery())
                 .build();
     }
-
+ 
     // DTO를 엔티티로 변환
     public SmokingArea toEntity() {
         return SmokingArea.builder()
