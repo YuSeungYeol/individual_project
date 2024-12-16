@@ -52,10 +52,15 @@
 
         // 서버에서 받은 흡연장 데이터로 마커 추가
         const smokingAreas = /*[[${smokingAreas}]]*/ []; // 서버에서 전달된 데이터
-        smokingAreas.forEach(area => {
-            const areaLocation = [area.latitude, area.longitude];
-            L.marker(areaLocation).addTo(map);
-        });
+
+		console.log(smokingAreas); // 브라우저 콘솔에서 데이터 확인
+		
+		smokingAreas.forEach(area => {
+		    const areaLocation = [area.latitude, area.longitude];
+		    L.marker(areaLocation).addTo(map)
+		        .bindPopup(area.address)
+		        .openPopup();
+		});
 
         // 흡연장 검색 및 마커 추가 함수
         function searchSmokingAreas(latitude, longitude) {
