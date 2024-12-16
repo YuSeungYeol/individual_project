@@ -38,6 +38,7 @@ public class SmokingAreaController {
         // 검색된 장소명을 기준으로 흡연장 검색
         List<SmokingArea> smokingAreas = smokingAreaService.searchSmokingAreas(searchQuery);
         model.addAttribute("smokingAreas", smokingAreas);
+        model.addAttribute("searchQuery", searchQuery);
         return "place/placeOriginal"; // 템플릿 경로 확인
     }
 
