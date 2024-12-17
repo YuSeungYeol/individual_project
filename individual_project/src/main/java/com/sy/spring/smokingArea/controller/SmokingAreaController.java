@@ -50,7 +50,4 @@ public class SmokingAreaController {
         return smokingAreaService.getSmokingAreas(lat, lon);
     }
 
-
-
-
 }
