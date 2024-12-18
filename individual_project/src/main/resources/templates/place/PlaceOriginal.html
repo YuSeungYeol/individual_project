@@ -26,54 +26,73 @@
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
     <!-- 지도 초기화 및 위치 데이터 처리 스크립트 -->
-    <script>
-        // 기본 지도 설정: 서울 중심
-        const map = L.map('map').setView([37.5665, 126.9780], 12); // 초기 위치: 서울
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            maxZoom: 19,
-        }).addTo(map);
+    <script th:inline="javascript">
+	    /*<![CDATA[*/
+	    const searchLat = /*[[${lat}]]*/ null;
+	    const searchLon = /*[[${lon}]]*/ null;
+	    /*]]>*/
+	</script>
 
-        // 마커 설정 (드래그 가능)
-        const marker = L.marker([37.5665, 126.9780], { draggable: true }).addTo(map);
+	<script>
+	    // 기본 지도 설정: 서울 중심
+	    const map = L.map('map').setView([37.5665, 126.9780], 12); // 초기 위치: 서울
+	    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+	        maxZoom: 19,
+	    }).addTo(map);
+	
+	    // 마커 설정 (드래그 가능)
+	    const marker = L.marker([37.5665, 126.9780], { draggable: true }).addTo(map);
+	
+	    // 검색된 좌표가 있으면 해당 위치로 지도와 마커 이동
+	    if (searchLat && searchLon) {
+	        const searchLocation = [searchLat, searchLon];
+	        map.setView(searchLocation, 14); // 지도 중심을 검색된 위치로 설정
+	        marker.setLatLng(searchLocation);
+	
+	        // 흡연장 검색 및 마커 추가 함수 호출
+	        searchSmokingAreas(searchLat, searchLon);
+	    } else {
+	        // HTML5 Geolocation으로 사용자 위치 받기
+	        if (navigator.geolocation) {
+	            navigator.geolocation.getCurrentPosition(function (position) {
+	                const lat = position.coords.latitude;
+	                const lon = position.coords.longitude;
+	                const userLocation = [lat, lon];
+	                map.setView(userLocation, 14); // 사용자 위치로 지도 중심 이동
+	                marker.setLatLng(userLocation);
+	
+	                // 흡연장 검색 및 마커 추가 함수 호출
+	                searchSmokingAreas(lat, lon);
+	            });
+	        }
+	    }
+	
+	    // 서버에서 받은 흡연장 데이터로 마커 추가
+	    const smokingAreas = /*[[${smokingAreas}]]*/ []; // 서버에서 전달된 데이터
+	
+	    console.log(smokingAreas); // 브라우저 콘솔에서 데이터 확인
+	
+	    smokingAreas.forEach(area => {
+	        const areaLocation = [area.latitude, area.longitude];
+	        L.marker(areaLocation).addTo(map)
+	            .bindPopup(area.address)
+	            .openPopup();
+	    });
+	
+	    // 흡연장 검색 및 마커 추가 함수
+	    function searchSmokingAreas(latitude, longitude) {
+	        fetch(`/api/smoking-areas?lat=${latitude}&lon=${longitude}`)
+	            .then(response => response.json())
+	            .then(data => {
+	                data.forEach(area => {
+	                    const areaLocation = [area.latitude, area.longitude]; // 'lat', 'lon' 대신 'latitude', 'longitude' 사용
+	                    L.marker(areaLocation).addTo(map)
+	                        .bindPopup(area.address);
+	                });
+	            })
+	            .catch(error => console.error('Error fetching smoking area data:', error));
+	    }
+	</script>
 
-        // HTML5 Geolocation으로 사용자 위치 받기
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(function (position) {
-                const lat = position.coords.latitude,
-                      lon = position.coords.longitude;
-                const userLocation = [lat, lon];
-                map.setView(userLocation, 14); // 사용자 위치로 지도 중심 이동
-                marker.setLatLng(userLocation);
-
-                // 흡연장 검색 및 마커 추가 함수 호출
-                searchSmokingAreas(lat, lon);
-            });
-        }
-
-        // 서버에서 받은 흡연장 데이터로 마커 추가
-        const smokingAreas = /*[[${smokingAreas}]]*/ []; // 서버에서 전달된 데이터
-
-		console.log(smokingAreas); // 브라우저 콘솔에서 데이터 확인
-		
-		smokingAreas.forEach(area => {
-		    const areaLocation = [area.latitude, area.longitude];
-		    L.marker(areaLocation).addTo(map)
-		        .bindPopup(area.address)
-		        .openPopup();
-		});
-
-        // 흡연장 검색 및 마커 추가 함수
-        function searchSmokingAreas(latitude, longitude) {
-            fetch(`/api/smoking-areas?lat=${latitude}&lon=${longitude}`)
-                .then(response => response.json())
-                .then(data => {
-                    data.forEach(area => {
-                        const areaLocation = [area.lat, area.lon];
-                        L.marker(areaLocation).addTo(map);
-                    });
-                })
-                .catch(error => console.error('Error fetching smoking area data:', error));
-        }
-    </script>
 </body>
 </html>
