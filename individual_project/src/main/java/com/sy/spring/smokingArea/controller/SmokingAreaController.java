@@ -37,10 +37,24 @@ public class SmokingAreaController {
     public String searchSmokingArea(@RequestParam("query") String searchQuery, Model model) {
         // 검색된 장소명을 기준으로 흡연장 검색
         List<SmokingArea> smokingAreas = smokingAreaService.searchSmokingAreas(searchQuery);
+        
+        // 검색된 장소의 첫 번째 흡연장의 좌표를 기준으로 지도 중심 설정 (임시로 첫 번째 결과 사용)
+        double latitude = 37.5665; // 기본값: 서울
+        double longitude = 126.9780; // 기본값: 서울
+
+        if (!smokingAreas.isEmpty()) {
+            latitude = smokingAreas.get(0).getLatitude();
+            longitude = smokingAreas.get(0).getLongitude();
+        }
+
         model.addAttribute("smokingAreas", smokingAreas);
         model.addAttribute("searchQuery", searchQuery);
-        return "place/placeOriginal"; // 템플릿 경로 확인
+        model.addAttribute("lat", latitude);
+        model.addAttribute("lon", longitude);
+
+        return "place/placeOriginal";
     }
+
 
     @GetMapping("/api/smoking-areas")
     @ResponseBody
@@ -50,4 +64,5 @@ public class SmokingAreaController {
         return smokingAreaService.getSmokingAreas(lat, lon);
     }
 
+    
 }
