@@ -50,6 +50,9 @@ public class SmokingAreaService {
 
     // 검색된 주소를 기준으로 흡연장 검색
     public List<SmokingArea> searchSmokingAreas(String searchQuery) {
-        return smokingAreaRepository.findByAddressContaining(searchQuery);
+        List<SmokingArea> result = smokingAreaRepository.findByAddressContaining(searchQuery);
+        System.out.println("검색 결과 수: " + result.size());
+        return result;
     }
+
 }
